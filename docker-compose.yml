@@ -2,12 +2,12 @@ version: '3.2'
 
 services:
   configurationservice:
-    build: ./configuration-service
+    image: patrykks/iosr-configuration-service
     ports:
       - "7777:7777"
 
   eureka:
-    build: ./discovery-service
+    image: patrykks/iosr-discovery-service
     ports:
       - "8761:8761"
     depends_on:
@@ -16,7 +16,7 @@ services:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
 
   zuul:
-    build: ./zuul-service
+    image: patrykks/iosr-zuul-service
     ports:
       - "8765:8765"
     depends_on:
@@ -27,7 +27,7 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
       
   hystrixdashboard:
-    build: ./hystrix-dashboard
+    image: patrykks/iosr-hystrix-dashboard
     ports:
       - "8766:8766"
     depends_on:
@@ -38,7 +38,7 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
 
   excelexportservice:
-    build: ./excel-export-service
+    image: patrykks/iosr-excel-export-service
     depends_on:
       - eureka
       - configurationservice
@@ -49,7 +49,7 @@ services:
 
 
   parkinglotservice:
-    build: ./parking-lot-service
+    image: patrykks/iosr-parking-lot-service
     depends_on:
       - eureka
       - configurationservice
