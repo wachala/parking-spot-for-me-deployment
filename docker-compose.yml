@@ -2,12 +2,16 @@ version: '3.2'
 
 services:
   configurationservice:
-    build: ./configuration-service
+    build:
+      context: ./configuration-service
+      dockerfile: /docker/Dockerfile.dist
     ports:
       - "7777:7777"
 
   eureka:
-    build: ./discovery-service
+    build:
+      context: ./discovery-service
+      dockerfile: /docker/Dockerfile.dist
     ports:
       - "8761:8761"
     depends_on:
@@ -16,7 +20,9 @@ services:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
 
   zuul:
-    build: ./zuul-service
+    build:
+      context: ./zuul-service
+      dockerfile: /docker/Dockerfile.dist
     ports:
       - "8765:8765"
     depends_on:
@@ -25,9 +31,11 @@ services:
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
-      
+
   hystrixdashboard:
-    build: ./hystrix-dashboard
+    build:
+      context: ./hystrix-dashboard
+      dockerfile: /docker/Dockerfile.dist
     ports:
       - "8766:8766"
     depends_on:
@@ -38,7 +46,9 @@ services:
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
 
   excelexportservice:
-    build: ./excel-export-service
+    build:
+      context: ./excel-export-service
+      dockerfile: /docker/Dockerfile.dist
     depends_on:
       - eureka
       - configurationservice
@@ -47,9 +57,10 @@ services:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
 
-
   parkinglotservice:
-    build: ./parking-lot-service
+    build:
+      context: ./parking-lot-service
+      dockerfile: /docker/Dockerfile.dist
     depends_on:
       - eureka
       - configurationservice
