@@ -57,3 +57,16 @@ services:
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  parkingspotwebapp:
+    image: patrykks/iosr-parking-spot-webapp
+    ports:
+      - "8080:8080"
+    depends_on:
+      - parkinglotservice
+      - eureka
+      - configurationservice
+      - zuul
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
