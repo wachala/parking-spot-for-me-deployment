@@ -16,5 +16,7 @@
     <module>parking-lot-service</module>
     <module>hystrix-dashboard</module>
     <module>configuration-service</module>
+    <module>integration-tests</module>
+    <module>parking-spot-for-me-webapp</module>
   </modules>
 </project>
