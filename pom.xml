@@ -19,5 +19,6 @@
     <module>integration-tests</module>
     <module>parking-spot-for-me-webapp</module>
     <module>admin-service</module>
+    <module>zipkin-service</module>
   </modules>
 </project>
