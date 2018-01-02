@@ -18,5 +18,6 @@
     <module>configuration-service</module>
     <module>integration-tests</module>
     <module>parking-spot-for-me-webapp</module>
+    <module>admin-service</module>
   </modules>
 </project>

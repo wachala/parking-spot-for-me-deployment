@@ -19,6 +19,7 @@
 *.rar
 
 # Microservices
+admin-service/
 configuration-service/
 discovery-service/
 excel-export-service/

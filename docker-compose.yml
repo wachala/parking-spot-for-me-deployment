@@ -83,3 +83,16 @@ services:
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  adminservice:
+    build:
+      context: ./admin-service
+      dockerfile: /docker/Dockerfile.dist
+    ports:
+      - "1111:1111"
+    depends_on:
+      - eureka
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
