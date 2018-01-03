@@ -19,6 +19,8 @@
 *.rar
 
 # Microservices
+zipkin-service/
+admin-service/
 configuration-service/
 discovery-service/
 excel-export-service/
