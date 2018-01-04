@@ -25,7 +25,7 @@ services:
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
-      
+
   hystrixdashboard:
     image: patrykks/iosr-hystrix-dashboard
     ports:
@@ -47,7 +47,6 @@ services:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
 
-
   parkinglotservice:
     image: patrykks/iosr-parking-lot-service
     depends_on:
@@ -67,6 +66,28 @@ services:
       - eureka
       - configurationservice
       - zuul
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  adminservice:
+    image: patrykks/iosr-admin-service
+    ports:
+      - "1111:1111"
+    depends_on:
+      - eureka
+      - configurationservice
+    environment:
+      CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+      EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+
+  zipkin:
+    image: patrykks/iosr-zipkin-service
+    ports:
+      - "9411:9411"
+    depends_on:
+      - eureka
+      - configurationservice
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
