@@ -1,12 +1,35 @@
 version: '3.2'
 
 services:
+  elasticsearch:
+    image: elasticsearch
+    ports:
+      - "9200:9200"
+
+  kibana:
+    image: kibana
+    ports:
+      - "5601:5601"
+
+  fluentd:
+    build: ./fluentd
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+
   configurationservice:
     build:
       context: ./configuration-service
       dockerfile: /docker/Dockerfile.dist
     ports:
       - "7777:7777"
+    depends_on:
+      - fluentd
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: configurationservice
 
   eureka:
     build:
@@ -16,8 +39,14 @@ services:
       - "8761:8761"
     depends_on:
       - configurationservice
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: eureka
 
   zuul:
     build:
@@ -28,9 +57,15 @@ services:
     depends_on:
       - eureka
       - configurationservice
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: zuul
 
   hystrixdashboard:
     build:
@@ -41,9 +76,15 @@ services:
     depends_on:
       - eureka
       - configurationservice
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: hystrixdashboard
 
   excelexportservice:
     build:
@@ -53,9 +94,15 @@ services:
       - eureka
       - configurationservice
       - zuul
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: excelexportservice
 
   parkinglotservice:
     build:
@@ -65,9 +112,15 @@ services:
       - eureka
       - configurationservice
       - zuul
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: parkinglotservice
 
   parkingspotwebapp:
     build:
@@ -80,9 +133,15 @@ services:
       - eureka
       - configurationservice
       - zuul
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: parkingspotwebapp
 
   adminservice:
     build:
@@ -93,10 +152,15 @@ services:
     depends_on:
       - eureka
       - configurationservice
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
-
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: adminservice
   zipkin:
     build:
       context: ./zipkin-service
@@ -106,6 +170,12 @@ services:
     depends_on:
       - eureka
       - configurationservice
+      - fluentd
     environment:
       CONFIGURATION_SERVICE_URL: http://configurationservice:7777
       EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE: http://eureka:8761/eureka
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: localhost:24224
+        tag: zipkin
