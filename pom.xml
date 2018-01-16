@@ -20,5 +20,7 @@
     <module>parking-spot-for-me-webapp</module>
     <module>admin-service</module>
     <module>zipkin-service</module>
+    <module>batch-service</module>
+    <module>event-generator</module>
   </modules>
 </project>
